@@ -1,17 +1,17 @@
 
 import {Injectable} from "@angular/core";
 import {Http, Response, Headers} from "@angular/http";
-import {AuthService} from "../auth/auth.service";
 import { Observable } from 'rxjs';
 import {environment} from "../../environments/environment";
 import {RequestService} from "../request/request.service";
+import {PeopleRequest} from "../model/people-request";
 
 @Injectable()
 export class ApiService {
 
   constructor(
     private http: Http,
-    private auth: AuthService, private reqService: RequestService) { }
+    private reqService: RequestService) { }
 
   storeRequests() {
     //store requests from RequestService
@@ -21,33 +21,25 @@ export class ApiService {
   }
 
   getRequests() {
-    return this.http.get('https://udemi-ng-http.firebaseio.com/requests.json')
+    const httpDatabase = environment.firebase.databaseURL + '/requests.json';
+    return this.http.get(httpDatabase)
       .map(
         (response: Response) => {
-          const data = response.json();
-          for (const request of data) {
-            request.description = 'FETCHED_' + request.description;
-          }
-          return data;
+          const requests: PeopleRequest[] = response.json();
+          return requests;
         }
       )
       .catch(
         (error: Response) => {
           return Observable.throw("Something went wrong");
         }
-      );
-  }
-
-  getAppName() {
-    return this.http.get('https://udemi-ng-http.firebaseio.com/appName.json')
-      .map(
-        (response: Response) => {
-          return response.json();
+      )
+      .subscribe(
+        (requests: PeopleRequest[]) => {
+          this.reqService.setRequests(requests);
         }
-      );
+      )
+      ;
   }
-
-
-
 
 }

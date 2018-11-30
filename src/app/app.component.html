@@ -5,7 +5,9 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a routerLink="/">Home</a></li>
-      <li><a routerLink="/requests" >Обращения</a></li>
+      <li *ngIf="auth.isAuthenticated()">
+        <a routerLink="/requests" >Обращения</a>
+      </li>
       <li *ngIf="!auth.isAuthenticated()">
         <a routerLink=""  (click)="auth.login()"> Войти <span class="glyphicon glyphicon-log-in"></span></a>
       </li><li *ngIf="auth.isAuthenticated()">

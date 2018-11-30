@@ -4,6 +4,7 @@ import {RequestService} from "../request.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ApiService} from "../../core/api.service";
+import {UserService} from "../../users/user.service";
 
 @Component({
   selector: 'app-request-list',
@@ -20,10 +21,11 @@ export class RequestListComponent implements OnInit, OnDestroy {
     {id: 0, value: 'МФЦ'}
   ];
 
-  constructor (private reqService: RequestService,
+  constructor (private reqService: RequestService, private userService: UserService,
   private route: ActivatedRoute, private router: Router, private api: ApiService) {}
 
   ngOnInit() {
+    this.api.getRequests();
     this.requests = this.reqService.getRequests();
     this.subscription = this.reqService.requestsChanged.subscribe(
       (requests: PeopleRequest[]) => {
@@ -33,12 +35,15 @@ export class RequestListComponent implements OnInit, OnDestroy {
     this.requests = this.reqService.getRequests();
   }
 
+  getUserFIO(id: number) {
+    return this.userService.getUserFIOById(id);
+  }
+
   onNewRequest() {
     this.router.navigate(['new'], {relativeTo: this.route});
   }
 
   onEditRequest(index: number) {
-    //console.log('Open ' + index + ' request.' )
     this.router.navigate([index, 'edit'], {relativeTo: this.route});
   }
 

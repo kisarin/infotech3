@@ -23,7 +23,7 @@
     <button type="button" class="btn btn-danger" (click)="onCancel()">Отмена</button>
   </form>
   <div>
-  <p>Пользователь: {{ user.lastName + ' ' + user.firstName }} </p>
+  <p *ngIf="user">Пользователь: {{ user?.lastName + ' ' + user?.firstName }} </p>
   </div>
 </div>
 

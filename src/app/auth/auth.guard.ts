@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate {
     } else {
       // Send guarded route to redirect after logging in
       //this.auth.login(state.url);
+      console.log('Forbidden');
       return false;
     }
   }

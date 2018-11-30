@@ -28,5 +28,10 @@ export class UserService {
     return this.users.find(x => x.tokenId == token);
   }
 
+  getUserFIOById(id: number) {
+    let user = this.users.find(x => x.id == id);
+    return user.lastName + ' ' + user.firstName;
+  }
+
 }
 

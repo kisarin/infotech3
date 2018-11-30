@@ -59,13 +59,12 @@ export class RequestEditComponent implements OnInit{
     }
 
     console.log('initForm start');
+
     this.initForm();
   }
 
   initForm() {
-
-    this.findUser();
-
+    //this.findUser();
     let reqDate = '';
     let reqType = 0;
     let reqDescr = '';
@@ -84,7 +83,7 @@ export class RequestEditComponent implements OnInit{
 
 
     console.log('initForm end');
-    //this.findUser();
+    this.findUser();
   }
 
 
@@ -94,7 +93,8 @@ export class RequestEditComponent implements OnInit{
     if (this.profile) {
       this.user = this.userServise.getUserByToken(this.profile.sub);
     } else {
-      this.user = this.userServise.getUserById(1);
+      console.log('User not found.');
+      //this.user = this.userServise.getUserById(1);
     }
   }
 
