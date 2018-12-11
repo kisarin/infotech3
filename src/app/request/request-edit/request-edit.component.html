@@ -3,9 +3,18 @@
     <div>
       <div class="form-group">
         <label for="reqdate">Дата обращения</label>
-        <input type="text" class="form-control" id="reqdate"
-               formControlName="reqdate">
+        <div class="input-group">
+          <input class="form-control"
+            a2e-datetimepicker
+            formControlName="reqdate"
+            [options]="options"
+          />
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
       </div>
+
       <div class="form-group">
         <label for="reqtype">Характер обращения</label>
         <select class="form-control" id="reqtype"

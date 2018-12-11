@@ -6,6 +6,8 @@ import {FormGroup, FormControl, Validators} from "@angular/forms";
 import {UserService} from "../../users/user.service";
 import {AuthService} from "../../auth/auth.service";
 import {User} from "../../model/user";
+import * as moment from 'moment';
+import {ApiService} from "../../core/api.service";
 
 @Component({
   selector: 'app-request-edit',
@@ -13,6 +15,9 @@ import {User} from "../../model/user";
 })
 
 export class RequestEditComponent implements OnInit{
+  //for date
+  options: any = {format: 'DD.MM.YYYY HH:mm', showClear: true};
+
   request: PeopleRequest;
   editMode = false;
   reqId: number;
@@ -29,6 +34,7 @@ export class RequestEditComponent implements OnInit{
 
   constructor ( private route: ActivatedRoute, private router: Router,
                 private reqServ: RequestService, private userServise: UserService,
+                private api: ApiService,
                 private auth: AuthService) {}
 
   ngOnInit() {
@@ -65,13 +71,13 @@ export class RequestEditComponent implements OnInit{
 
   initForm() {
     //this.findUser();
-    let reqDate = '';
+    let reqDate = moment(Date.now());
     let reqType = 0;
     let reqDescr = '';
     if (this.editMode) {
       this.request = this.reqServ.getRequest(this.reqId);
       if (this.request) {
-        reqDate = this.request.date;
+        reqDate = moment(this.request.date);
         reqType = this.request.type;
         reqDescr = this.request.description;
       }
@@ -100,23 +106,26 @@ export class RequestEditComponent implements OnInit{
 
 
   onSubmit() {
-    const req = new PeopleRequest(0, '', 0, '', 0);
-    req.id = this.reqId;
-    req.date = this.reqForm.get('reqdate').value;
-    req.description = this.reqForm.get('reqdescr').value;
-    req.type = +this.reqForm.get('reqtype').value;
+    const request = new PeopleRequest(0, '', 0, '', 0);
+    request.id = this.reqId;
+    request.date = this.reqForm.get('reqdate').value;
+    request.description = this.reqForm.get('reqdescr').value;
+    request.type = +this.reqForm.get('reqtype').value;
 
     //find userId
-    req.userId = this.user.id;
+    request.userId = this.user.id;
 
     if (this.editMode) {
       //if edit mode, userId not change
-      req.userId = this.request.userId;
-      this.reqServ.updateRequest(this.reqId, req);
+      request.userId = this.request.userId;
+      this.reqServ.updateRequest(this.reqId, request);
     }
     else {
-      this.reqServ.addRequest(req);
+      this.reqServ.addRequest(request);
     }
+    console.log(request);
+    //this.api.createRequest(request);
+
     this.onCancel();
   }
 

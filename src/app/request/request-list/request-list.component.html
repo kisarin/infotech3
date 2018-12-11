@@ -13,7 +13,7 @@
     </thead>
     <tbody *ngFor="let request of requests; let i = index">
       <tr>
-        <td>{{ request.date }}</td>
+        <td>{{ dateView(request.date) }}</td>
         <td>{{ reqTypesDict[request.type].value }}</td>
         <td>{{ request.description }}</td>
         <td>{{ getUserFIO(request.userId) }}</td>
