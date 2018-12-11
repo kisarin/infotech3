@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import {HttpModule} from "@angular/http";
 import {HomeComponent} from "../home/home.component";
 import {PageNotFoundComponent} from "../not-found.component";
+import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
 
 
 //import { ApiService } from './api.service';
@@ -16,7 +17,8 @@ import {PageNotFoundComponent} from "../not-found.component";
     CommonModule,
     RouterModule,
     HttpModule, // AuthModule is a sibling and can use this without us exporting it
-    FormsModule
+    FormsModule,
+    A2Edatetimepicker
   ],
   declarations: [
     HomeComponent,
@@ -24,6 +26,8 @@ import {PageNotFoundComponent} from "../not-found.component";
   ],
   exports: [
     FormsModule // Export FormsModule so CommentsModule can use it
+    ,
+    A2Edatetimepicker
 
   ]
 })

@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {ApiService} from "../../core/api.service";
 import {UserService} from "../../users/user.service";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-request-list',
@@ -25,7 +26,7 @@ export class RequestListComponent implements OnInit, OnDestroy {
   private route: ActivatedRoute, private router: Router, private api: ApiService) {}
 
   ngOnInit() {
-    this.api.getRequests();
+    //this.api.getRequests();
     this.requests = this.reqService.getRequests();
     this.subscription = this.reqService.requestsChanged.subscribe(
       (requests: PeopleRequest[]) => {
@@ -58,6 +59,10 @@ export class RequestListComponent implements OnInit, OnDestroy {
         (response) => console.log(response),
         (error) => console.log(error)
       );
+  }
+
+  dateView(str: string) {
+    return moment(str).format('DD.MM.YYYY HH:mm');
   }
 
   ngOnDestroy() {

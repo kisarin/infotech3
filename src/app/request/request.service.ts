@@ -7,9 +7,9 @@ export class RequestService {
   requestsChanged = new Subject<PeopleRequest[]>();
 
   private requests: PeopleRequest[] = [
-    new PeopleRequest(1, '2018-11-08', 1, 'Обращение за ЖКХ', 1),
-    new PeopleRequest(2, '2018-11-07', 2, 'Обращение за пособием на ребенка', 1),
-    new PeopleRequest(3, '2018-10-11', 0, 'Обращение за субсидией', 1)
+    new PeopleRequest(1, '2018-11-08T13:21:18.715Z', 1, 'Обращение за ЖКХ', 1),
+    new PeopleRequest(2, '2018-11-07T19:01:18.715Z', 2, 'Обращение за пособием на ребенка', 1),
+    new PeopleRequest(3, '2018-10-11T08:59:18.715Z', 0, 'Обращение за субсидией', 1)
   ];
 
   setRequests(requests: PeopleRequest[]) {
@@ -63,7 +63,7 @@ export class RequestService {
       this.requests.splice(index, 1);
     }
     else  console.log('Request with id ' + id + 'dont exist.');
-
+    console.log(this.requests);
     this.requestsChanged.next(this.requests.slice());
   }
 

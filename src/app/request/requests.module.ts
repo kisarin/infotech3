@@ -6,6 +6,7 @@ import {RequestsRoutingModule} from "./requests-routing.module";
 import {RequestListComponent} from "./request-list/request-list.component";
 import {RequestService} from "./request.service";
 import {RequestEditComponent} from "./request-edit/request-edit.component";
+import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {RequestEditComponent} from "./request-edit/request-edit.component";
   ],
   imports: [
     FormsModule,
+    A2Edatetimepicker,
     CommonModule,
     ReactiveFormsModule,
     RequestsRoutingModule

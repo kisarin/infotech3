@@ -1,7 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
+
 @Component({
-  template: '<h1>The Home Page.</h1><img src="assets/images.png" alt="picture check">'
+  templateUrl: './home.component.html'
 })
 export class HomeComponent {
+
+  constructor() { }
+
 
 }
