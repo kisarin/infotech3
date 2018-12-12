@@ -28,12 +28,14 @@ export class RequestListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //this.api.getRequests();
     this.requests = this.reqService.getRequests();
+
     this.subscription = this.reqService.requestsChanged.subscribe(
       (requests: PeopleRequest[]) => {
         this.requests = requests;
       }
     );
-    this.requests = this.reqService.getRequests();
+
+    //this.requests = this.reqService.getRequests();
   }
 
   getUserFIO(id: number) {

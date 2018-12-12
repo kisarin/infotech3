@@ -49,7 +49,6 @@ export class RequestEditComponent implements OnInit{
   }
 
   initProfile() {
-
     let sub = '';
     if (this.auth.userProfile) {
       this.profile = this.auth.userProfile;
@@ -63,9 +62,7 @@ export class RequestEditComponent implements OnInit{
         this.findUser();
       });
     }
-
     console.log('initForm start');
-
     this.initForm();
   }
 
@@ -124,7 +121,12 @@ export class RequestEditComponent implements OnInit{
       this.reqServ.addRequest(request);
     }
     console.log(request);
-    //this.api.createRequest(request);
+
+    this.api.storeRequests()
+      .subscribe(
+        (response) => console.log(response),
+        (error) => console.log(error)
+      );
 
     this.onCancel();
   }

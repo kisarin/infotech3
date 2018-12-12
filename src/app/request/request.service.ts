@@ -18,12 +18,20 @@ export class RequestService {
 }
 
   getRequests() {
-    return this.requests.slice();
+    return this.requests;//.slice();
   }
 
   getRequest(id: number) {
     //find request by id - not index array
     return this.requests.find(x => x.id == id);
+  }
+
+  getRequestByIndex(index: number) {
+    return this.requests[index];
+  }
+
+  getIndexRequest(request: PeopleRequest) {
+    return this.requests.findIndex(i => i === request)
   }
 
   addRequest(request: PeopleRequest) {
