@@ -6,10 +6,32 @@ import {environment} from "../../environments/environment";
 import {RequestService} from "../request/request.service";
 import {PeopleRequest} from "../model/people-request";
 
+//import  * as cors from "cors";
+
+import * as cors from 'cors';
+
+
+import * as moment from 'moment';
+
+//https://infotech-test.firebaseio.com/requests/0
+//https://infotech-test.firebaseio.com/requests.json/2'
+
 @Injectable()
 export class ApiService {
 
-  requestUrl = environment.firebase.databaseURL + '/requests.json';
+  requestUrl = 'https://infotechtest-1f7b.restdb.io/rest/requests';
+    //environment.firebase.databaseURL + '/requests';
+
+  headerDict = {
+  'Content-Type': 'application/json',
+  'x-apikey': 'e7955371df2a2308c011f6cf91c5edfc9b816',
+  'Accept': 'application/json',
+  //'Access-Control-Allow-Headers': 'Content-Type',
+  //'Access-Control-Allow-Origin': 'localhost:4200',
+  //'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE'
+};
+
+  requestOptions = { headers: new Headers(this.headerDict) };
 
   constructor(
     private http: Http,
@@ -17,12 +39,12 @@ export class ApiService {
 
   storeRequests() {
     //store requests from RequestService
-    console.log('httpDatabase ' + this.requestUrl);
-    // let count = this.reqService.getRequests().length;
-    // for (let i = 0; i< count; i++) {
-    //   this.updateRequest(this.reqService.getRequestByIndex(i));
-    // }
-    return this.http.put(this.requestUrl, this.reqService.getRequests());
+    //console.log('httpDatabase ' + this.requestUrl);
+    //let url = 'https://infotechtest-1f7b.restdb.io/rest/'+ 'requests';
+    console.log('url = ' + this.requestUrl);
+    let reqJson =  JSON.stringify(this.reqService.getRequests());
+    console.log('reqJson = ' + reqJson);
+    return this.http.put(this.requestUrl, reqJson, this.requestOptions);
   }
 
   updateRequest(request: PeopleRequest) {
@@ -56,16 +78,41 @@ export class ApiService {
           return requests;
         }
       )
-      .catch(
-        (error: Response) => {
-          return Observable.throw("Something went wrong");
-        }
-      )
+      .catch(this.handleError)
       .subscribe(
         (requests: PeopleRequest[]) => {
           this.reqService.setRequests(requests);
         }
       );
+  }
+
+  getRequest(id: number) {
+    // let headers = new Headers({ 'Content-Type': 'application/json' });
+    // let options = new RequestOptions({ headers: headers });
+    // const corsHandler = cors({origin: true});
+
+    let url = `${this.requestUrl}?q={"id":${id}}`;
+    return this.http.get(url, this.requestOptions)
+      .map(
+        (response: Response) => {
+          const request: PeopleRequest = response.json();
+          return request;
+        }
+      )
+      .catch(this.handleError)
+      .subscribe(
+        (request: PeopleRequest) => {
+          console.log(request);
+        }
+      );
+
+  }
+
+  private handleError(error: any) {
+    let errMsg = (error.message) ? error.message :
+      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 
 }

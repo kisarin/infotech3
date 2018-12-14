@@ -1,5 +1,7 @@
 <div class="container">
+
   <form [formGroup]="reqForm"(ngSubmit)="onSubmit()" >
+
     <div>
       <div class="form-group">
         <label for="reqdate">Дата обращения</label>
@@ -14,7 +16,6 @@
           </span>
         </div>
       </div>
-
       <div class="form-group">
         <label for="reqtype">Характер обращения</label>
         <select class="form-control" id="reqtype"
@@ -30,6 +31,7 @@
     </div>
     <button type="submit" class="btn btn-success" [disabled]="!reqForm.valid">Сохранить</button>
     <button type="button" class="btn btn-danger" (click)="onCancel()">Отмена</button>
+    <button type="button" class="btn btn-default" (click)="findRequest()">Найти обращение в БД</button>
   </form>
   <div>
   <p *ngIf="user">Пользователь: {{ user?.lastName + ' ' + user?.firstName }} </p>

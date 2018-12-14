@@ -122,7 +122,8 @@ export class RequestEditComponent implements OnInit{
     }
     console.log(request);
 
-    this.api.storeRequests()
+    console.log('update request');
+    this.api.updateRequest(request)
       .subscribe(
         (response) => console.log(response),
         (error) => console.log(error)
@@ -137,6 +138,12 @@ export class RequestEditComponent implements OnInit{
       this.router.navigate(['../../'], {relativeTo: this.route});
     }
     else this.router.navigate(['../'], {relativeTo: this.route});
+  }
+
+  findRequest() {
+    //let index = this.reqServ.getIndexRequest(this.request);
+    this.api.getRequest(this.request.id);
+
   }
 
 }
