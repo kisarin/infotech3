@@ -6,17 +6,15 @@ import {HttpModule} from "@angular/http";
 import {HomeComponent} from "../home/home.component";
 import {PageNotFoundComponent} from "../not-found.component";
 import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
-import {environment} from "../../environments/environment";
-import {RestangularModule} from "ng2-restangular";
-import {RestService} from "./rest.service";
 
 
-export function restangular (RestangularProvider) {
+
+/*export function restangular (RestangularProvider) {
   RestangularProvider.setBaseUrl(environment.restdb.databaseUrl); //('https://todos-876a.restdb.io/rest/');
   RestangularProvider.setDefaultHeaders({'x-apikey': environment.restdb.xApikey});
   //RestangularProvider.setDefaultRequestParams({apikey: environment.restdb.xApikey});
   //RestangularProvider.setRestangularFields({id: "_id"});
-}
+}*/
 
 @NgModule({
   imports: [
@@ -24,8 +22,8 @@ export function restangular (RestangularProvider) {
     RouterModule,
     HttpModule, // AuthModule is a sibling and can use this without us exporting it
     FormsModule,
-    A2Edatetimepicker,
-    RestangularModule.forRoot(restangular)
+    A2Edatetimepicker
+    //RestangularModule.forRoot(restangular)
   ],
   declarations: [
     HomeComponent,
@@ -37,7 +35,7 @@ export function restangular (RestangularProvider) {
     A2Edatetimepicker
 
   ],
-  providers: [RestService]
+  providers: []
 })
 
 export class CoreModule {
