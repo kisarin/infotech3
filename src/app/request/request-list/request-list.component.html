@@ -1,6 +1,8 @@
-<button class="btn btn-primary" (click)="onNewRequest()">Добавить обращение</button>
-<button class="btn btn-primary" (click)="onSaveRequests()">Сохранить обращения в БД</button>
+
 <div class="container">
+  <button class="btn btn-primary" (click)="onNewRequest()">Добавить обращение</button>
+  <button class="btn btn-primary" (click)="onGetServiceRequests()">Буфер обращений</button>
+  <button class="btn btn-primary" (click)="onGetRequests()">Обновить список обращений</button>
   <table class="table">
     <thead>
     <tr>
@@ -23,6 +25,9 @@
           </button>
           <button class="btn btn-danger" (click)="onDeleteRequest(request.id)">
             <i class="glyphicon glyphicon-remove"></i>
+          </button>
+          <button class="btn btn-default" (click)="onGetRequestFromDatebase(request.id)">
+            <i class="glyphicon glyphicon-book"></i>
           </button>
         </td>
       </tr>

@@ -1,16 +1,22 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import {NgModule, Optional, SkipSelf} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { DatePipe } from '@angular/common';
 import {HttpModule} from "@angular/http";
 import {HomeComponent} from "../home/home.component";
 import {PageNotFoundComponent} from "../not-found.component";
 import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
+import {environment} from "../../environments/environment";
+import {RestangularModule} from "ng2-restangular";
+import {RestService} from "./rest.service";
 
 
-//import { ApiService } from './api.service';
+export function restangular (RestangularProvider) {
+  RestangularProvider.setBaseUrl(environment.restdb.databaseUrl); //('https://todos-876a.restdb.io/rest/');
+  RestangularProvider.setDefaultHeaders({'x-apikey': environment.restdb.xApikey});
+  //RestangularProvider.setDefaultRequestParams({apikey: environment.restdb.xApikey});
+  //RestangularProvider.setRestangularFields({id: "_id"});
+}
 
 @NgModule({
   imports: [
@@ -18,7 +24,8 @@ import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
     RouterModule,
     HttpModule, // AuthModule is a sibling and can use this without us exporting it
     FormsModule,
-    A2Edatetimepicker
+    A2Edatetimepicker,
+    RestangularModule.forRoot(restangular)
   ],
   declarations: [
     HomeComponent,
@@ -29,17 +36,15 @@ import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
     ,
     A2Edatetimepicker
 
-  ]
+  ],
+  providers: [RestService]
 })
+
 export class CoreModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: CoreModule,
-      providers: [
-        Title,
-        DatePipe
-        //ApiService
-      ]
-    };
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+    if (parentModule) {
+      throw new Error(
+        'CoreModule is already loaded. Import it in the AppModule only');
+    }
   }
 }

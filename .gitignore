@@ -3,6 +3,8 @@
 # compiled output
 /dist
 /tmp
+/src/app/core/rest.service.ts
+/src/app/core/cors.service.ts
 
 # dependencies
 /node_modules

@@ -18,7 +18,7 @@ export class RequestEditComponent implements OnInit{
   //for date
   options: any = {format: 'DD.MM.YYYY HH:mm', showClear: true};
 
-  request: PeopleRequest;
+  selectedRequest: PeopleRequest;
   editMode = false;
   reqId: number;
   user: User;
@@ -41,7 +41,7 @@ export class RequestEditComponent implements OnInit{
 
     this.route.params.subscribe(
       (params: Params) => {
-        this.reqId = +params['id'];
+        this.reqId = params['id'];
         this.editMode = params['id'] != null;
         this.initProfile();
 
@@ -72,11 +72,11 @@ export class RequestEditComponent implements OnInit{
     let reqType = 0;
     let reqDescr = '';
     if (this.editMode) {
-      this.request = this.reqServ.getRequest(this.reqId);
-      if (this.request) {
-        reqDate = moment(this.request.date);
-        reqType = this.request.type;
-        reqDescr = this.request.description;
+      this.selectedRequest = this.reqServ.getRequest(this.reqId);
+      if (this.selectedRequest) {
+        reqDate = moment(this.selectedRequest.date);
+        reqType = this.selectedRequest.type;
+        reqDescr = this.selectedRequest.description;
       }
     }
     this.reqForm = new FormGroup({
@@ -103,32 +103,47 @@ export class RequestEditComponent implements OnInit{
 
 
   onSubmit() {
-    const request = new PeopleRequest(0, '', 0, '', 0);
-    request.id = this.reqId;
-    request.date = this.reqForm.get('reqdate').value;
-    request.description = this.reqForm.get('reqdescr').value;
-    request.type = +this.reqForm.get('reqtype').value;
+    let requestForSave = new PeopleRequest('0', 0, '', 0, '', 0);
+    requestForSave.id = this.reqId;
+    requestForSave.date = this.reqForm.get('reqdate').value;
+    requestForSave.description = this.reqForm.get('reqdescr').value;
+    requestForSave.type = +this.reqForm.get('reqtype').value;
 
     //find userId
-    request.userId = this.user.id;
+    requestForSave.userId = this.user.id;
 
     if (this.editMode) {
-      //if edit mode, userId not change
-      request.userId = this.request.userId;
-      this.reqServ.updateRequest(this.reqId, request);
+      //if edit mode, userId, id and _id not change
+      requestForSave._id = this.selectedRequest._id;
+      requestForSave.userId = this.selectedRequest.userId;
+      requestForSave.id = this.selectedRequest.id;
+      //update selected request in service
+      this.reqServ.updateRequest(this.reqId, requestForSave);
+      console.log('update request');
+      //update selected request in database
+      this.api.updateRequest(requestForSave)
+        .subscribe(
+          (response) => console.log(response),
+          (error) => console.log(error)
+        );
     }
     else {
-      this.reqServ.addRequest(request);
+      //add request in
+      requestForSave.id = this.reqServ.getNewReqId();
+      this.api.createRequest(requestForSave)
+        .subscribe(
+          (response) => {
+            console.log('subscribe for new request');
+            console.log(response);
+          },
+          (error) => console.log(error)
+        );
+
+      //add selected request in service
+      //this.reqServ.addRequest(requestForSave);
+      console.log('create request');
     }
-    console.log(request);
-
-    console.log('update request');
-    this.api.updateRequest(request)
-      .subscribe(
-        (response) => console.log(response),
-        (error) => console.log(error)
-      );
-
+    console.log(requestForSave);
     this.onCancel();
   }
 
@@ -141,8 +156,8 @@ export class RequestEditComponent implements OnInit{
   }
 
   findRequest() {
-    //let index = this.reqServ.getIndexRequest(this.request);
-    this.api.getRequest(this.request.id);
+    //let index = this.reqServ.getIndexRequest(this.selectedRequest);
+    this.api.getRequest(this.selectedRequest.id);
 
   }
 
