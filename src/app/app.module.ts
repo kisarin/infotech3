@@ -14,7 +14,7 @@ import {UserService} from "./users/user.service";
 import {ProfileComponent} from "./profile/profile.component";
 import {CallbackComponent} from "./callback/callback.component";
 import {RequestsModule} from "./request/requests.module";
-import {A2Edatetimepicker} from "ng2-eonasdan-datetimepicker";
+
 
 
 @NgModule({
